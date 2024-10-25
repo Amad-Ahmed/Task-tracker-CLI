@@ -1,0 +1,6 @@
+load and create json if not exists in the path (done)
+make and save entries in json
+accept and process command line arguments
+add, update and delete tasks
+mark task in progress and completed
+list tasks
