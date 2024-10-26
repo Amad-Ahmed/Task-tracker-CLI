@@ -42,6 +42,20 @@ def add_task(file_name, data, task):
     print(f"Task added with ID {task_id}")
 
 
+# Function to delete a task from JSON
+def delete_task(file_name, data, id):
+    # find and delete the task by searching on basis of id
+    updated_data = [task for task in data if task["id"] != id]
+
+    # prompt if no task was found
+    if len(updated_data) == len(data):
+        print(f"No task with ID :: {id} was found.")
+    else:
+        with open(file_name, "w") as file:
+            json.dump(updated_data, file, indent=4)
+        print(f"Task with ID :: {id} was deleted.")
+
+
 # Load or create JSON
 json_path = "data.json"
 data = load_json(json_path)
@@ -54,9 +68,15 @@ subparsers = parser.add_subparsers(dest="command")
 add_parser = subparsers.add_parser("add", help="Add a new task")
 add_parser.add_argument("description", type=str, help="Description of the task.")
 
+# Delete subcommand
+delete_parser = subparsers.add_parser("delete", help="Delete a task based on id")
+delete_parser.add_argument("ID", type=int, help="ID of the task to delete.")
+
 # Parse arguments
 args = parser.parse_args()
 
 # Execute based on subcommand
 if args.command == "add":
     add_task(json_path, data, args.description)
+elif args.command == "delete":
+    delete_task(json_path, data, args.ID)
