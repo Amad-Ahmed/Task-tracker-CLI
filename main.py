@@ -72,6 +72,22 @@ def update_task(file_name, data, id, task):
         print(f"Task updated with ID {id}")
 
 
+# Function to change status of a task
+def change_status(file_name, data, id, status):
+    # find the task in json and change status
+    updated_data = [task for task in data if task["id"] != id]
+    if len(updated_data) == len(data):
+        print(f"No task found with ID :: {id}")
+    else:
+        task_tochange = [task for task in data if task["id"] == id]
+        task_tochange[0]["status"] = status
+        updated_data.append(task_tochange[0])
+
+        with open(file_name, "w") as file:
+            json.dump(updated_data, file, indent=4)
+        print(f"Task updated with ID {id}")
+
+
 # Load or create JSON
 json_path = "data.json"
 data = load_json(json_path)
@@ -97,6 +113,15 @@ update_parser.add_argument(
     "description", type=str, help="Updated description of the task to be updated."
 )
 
+# Change status subcommand
+inprogress_parser = subparsers.add_parser(
+    "mark-in-progress", help="Change status to in-progress"
+)
+inprogress_parser.add_argument("ID", type=int, help="ID of task to change status.")
+
+done_parser = subparsers.add_parser("mark-done", help="Change status to done")
+done_parser.add_argument("ID", type=int, help="ID of task to change status.")
+
 # Parse arguments
 args = parser.parse_args()
 
@@ -107,3 +132,7 @@ elif args.command == "delete":
     delete_task(json_path, data, args.ID)
 elif args.command == "update":
     update_task(json_path, data, args.ID, args.description)
+elif args.command == "mark-in-progress":
+    change_status(json_path, data, args.ID, "in-progress")
+elif args.command == "mark-done":
+    change_status(json_path, data, args.ID, "done")
