@@ -88,6 +88,30 @@ def change_status(file_name, data, id, status):
         print(f"Task updated with ID {id}")
 
 
+def list_tasks(data, status):
+    if status == "" or status is None:
+        for task in data:
+            print(f"description :: {task["description"]}")
+            print(f"status :: {task["status"]}")
+    elif status == "done":
+        for task in data:
+            if task["status"] == "done":
+                print(f"description :: {task["description"]}")
+                print(f"status :: {task["status"]}")
+    elif status == "todo":
+        for task in data:
+            if task["status"] == "todo":
+                print(f"description :: {task["description"]}")
+                print(f"status :: {task["status"]}")
+    elif status == "in-progress":
+        for task in data:
+            if task["status"] == "in-progress":
+                print(f"description :: {task["description"]}")
+                print(f"status :: {task["status"]}")
+    else:
+        print(f"Invalid command.")
+
+
 # Load or create JSON
 json_path = "data.json"
 data = load_json(json_path)
@@ -122,6 +146,15 @@ inprogress_parser.add_argument("ID", type=int, help="ID of task to change status
 done_parser = subparsers.add_parser("mark-done", help="Change status to done")
 done_parser.add_argument("ID", type=int, help="ID of task to change status.")
 
+# List subcommand
+list_parser = subparsers.add_parser("list", help="List all tasks.")
+list_parser.add_argument(
+    "status",
+    type=str,
+    nargs="?",
+    help="Filter tasks based on status (e.g., 'todo', 'completed').",
+)
+
 # Parse arguments
 args = parser.parse_args()
 
@@ -136,3 +169,7 @@ elif args.command == "mark-in-progress":
     change_status(json_path, data, args.ID, "in-progress")
 elif args.command == "mark-done":
     change_status(json_path, data, args.ID, "done")
+elif args.command == "list":
+    list_tasks(data, args.status)
+else:
+    print(f"Invaild Command.")

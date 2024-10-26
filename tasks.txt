@@ -3,7 +3,6 @@ make and save entries in json (done)
 accept and process command line arguments (done)
 add command (done)
 update command (done)
-delete command 
-mark task in progress and completed
-list tasks
-exception statements and error handling
+delete command (done)
+mark task in progress and completed (done)
+list tasks (done)
