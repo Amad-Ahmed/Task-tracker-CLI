@@ -56,6 +56,22 @@ def delete_task(file_name, data, id):
         print(f"Task with ID :: {id} was deleted.")
 
 
+# Function to update a task in JSON
+def update_task(file_name, data, id, task):
+    # find the task in json and update description
+    updated_data = [task for task in data if task["id"] != id]
+    if len(updated_data) == len(data):
+        print(f"No task found with ID :: {id}")
+    else:
+        task_tochange = [task for task in data if task["id"] == id]
+        task_tochange[0]["description"] = task
+        updated_data.append(task_tochange[0])
+
+        with open(file_name, "w") as file:
+            json.dump(updated_data, file, indent=4)
+        print(f"Task updated with ID {id}")
+
+
 # Load or create JSON
 json_path = "data.json"
 data = load_json(json_path)
@@ -72,6 +88,15 @@ add_parser.add_argument("description", type=str, help="Description of the task."
 delete_parser = subparsers.add_parser("delete", help="Delete a task based on id")
 delete_parser.add_argument("ID", type=int, help="ID of the task to delete.")
 
+# Update subcommand
+update_parser = subparsers.add_parser(
+    "update", help="Update an existing task on basis of id."
+)
+update_parser.add_argument("ID", type=int, help="ID of the task to update.")
+update_parser.add_argument(
+    "description", type=str, help="Updated description of the task to be updated."
+)
+
 # Parse arguments
 args = parser.parse_args()
 
@@ -80,3 +105,5 @@ if args.command == "add":
     add_task(json_path, data, args.description)
 elif args.command == "delete":
     delete_task(json_path, data, args.ID)
+elif args.command == "update":
+    update_task(json_path, data, args.ID, args.description)
