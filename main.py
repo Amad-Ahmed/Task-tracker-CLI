@@ -65,6 +65,7 @@ def update_task(file_name, data, id, task):
     else:
         task_tochange = [task for task in data if task["id"] == id]
         task_tochange[0]["description"] = task
+        task_tochange[0]["updatedAt"] = datetime.now().timestamp()
         updated_data.append(task_tochange[0])
 
         with open(file_name, "w") as file:
@@ -81,6 +82,7 @@ def change_status(file_name, data, id, status):
     else:
         task_tochange = [task for task in data if task["id"] == id]
         task_tochange[0]["status"] = status
+        task_tochange[0]["updatedAt"] = datetime.now().timestamp()
         updated_data.append(task_tochange[0])
 
         with open(file_name, "w") as file:
