@@ -15,6 +15,10 @@ This project is a command-line interface (CLI) application for managing tasks. I
 
 https://github.com/Amad-Ahmed/Task-tracker-CLI
 
+## Roadmap.sh Project Link
+
+https://roadmap.sh/projects/task-tracker
+
 ## Getting Started
 
 ### Prerequisites
